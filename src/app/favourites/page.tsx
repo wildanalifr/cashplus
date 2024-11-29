@@ -1,3 +1,22 @@
+'use client'
+
+import ProductCard from '@/components/ProductCard'
+import { useLikeProduct } from '@/context/LikeProductContext'
+
 export default function Favourites() {
-  return <p>halooo</p>
+  const { likeProducts } = useLikeProduct()
+
+  return (
+    <div>
+      {likeProducts.length > 0 ? (
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {likeProducts.map((item) => (
+            <ProductCard key={item.id} propItem={item} />
+          ))}
+        </div>
+      ) : (
+        <p>kosong wkwwk</p>
+      )}
+    </div>
+  )
 }

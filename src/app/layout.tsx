@@ -1,7 +1,8 @@
+import Providers from '@/context/Providers'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
-import './globals.css'
 import Navbar from '../components/Navbar'
+import './globals.css'
 import { ReactQueryProvider } from './ReactQueryProvider'
 
 const geistSans = localFont({
@@ -27,14 +28,16 @@ export default function RootLayout({
 }>) {
   return (
     <ReactQueryProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased px-3`}
-        >
-          <Navbar />
-          {children}
-        </body>
-      </html>
+      <Providers>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased px-3`}
+          >
+            <Navbar />
+            {children}
+          </body>
+        </html>
+      </Providers>
     </ReactQueryProvider>
   )
 }

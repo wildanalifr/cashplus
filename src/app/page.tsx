@@ -1,9 +1,9 @@
 'use client'
 
+import ProductCard from '@/components/ProductCard'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { tProduct } from '../types/product'
-import ProductCard from '@/components/ProductCard'
 
 export default function Home() {
   const { data, isLoading } = useQuery<tProduct[]>({
