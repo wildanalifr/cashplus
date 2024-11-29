@@ -1,11 +1,12 @@
 'use client'
 
+import Empty from '@/components/Empty'
+import FilterSort from '@/components/FilterSort'
 import ProductCard from '@/components/ProductCard'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import { tProduct } from '../types/product'
 import { useMemo, useState } from 'react'
-import FilterSort from '@/components/FilterSort'
+import { tProduct } from '../types/product'
 
 export default function Home() {
   const [filterSort, setFilterSort] = useState<string>('')
@@ -33,8 +34,6 @@ export default function Home() {
     })
   }, [data, search])
 
-  console.log('run')
-
   return (
     <div className="max-w-5xl mx-auto">
       <div className="mt-10 flex justify-between items-center border border-white py-2 px-3 rounded-3xl">
@@ -55,15 +54,6 @@ export default function Home() {
         />
       </div>
 
-      {/* <div className="flex items-center justify-between border border-gray-300 rounded-lg px-4 py-2 space-x-2 my-4 bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
-        <input
-          className="flex-1 bg-transparent text-gray-800 placeholder-gray-400 outline-none px-2 py-1 rounded-lg ring-0"
-          type="text"
-          placeholder="Search product name..."
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div> */}
-
       <div className="flex items-center justify-between my-2 gap-3">
         <input
           className="flex-1 bg-white text-gray-800 placeholder-gray-400 outline-none px-4 py-2 space-x-2 rounded-lg "
@@ -76,15 +66,16 @@ export default function Home() {
 
       <div>
         {isLoading && <p>loading....</p>}
-        {!isLoading && (
+
+        {!isLoading && filterData?.length > 0 ? (
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {filterData && filterData?.length > 0 ? (
-              filterData?.map((item) => (
-                <ProductCard key={item.id} propItem={item} />
-              ))
-            ) : (
-              <p>data tidak ditemukan</p>
-            )}
+            {filterData.map((item) => (
+              <ProductCard key={item.id} propItem={item} />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-2">
+            <Empty title="Your product is not found!" />
           </div>
         )}
       </div>

@@ -32,7 +32,9 @@ export default function MenuDesktop({ classNameProp }: Props) {
           </Link>
         ))}
 
-        <h3 onClick={logout}>Logout</h3>
+        <h3 className="hover:underline cursor-pointer" onClick={logout}>
+          Logout
+        </h3>
       </>
     </nav>
   )

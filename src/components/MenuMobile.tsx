@@ -1,7 +1,10 @@
 'use client'
 
+import { API_LOGIN } from '@/api/login'
+import { NavigationMenu } from '@/helper/NavigationMenu'
 import { Bars3Icon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 type Props = {
@@ -10,6 +13,14 @@ type Props = {
 
 export default function MenuMobile({ classNameProp }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const { id } = JSON.parse(localStorage.getItem('user')!)
+
+  const router = useRouter()
+
+  const logout = () => {
+    API_LOGIN.logout()
+    router.push('/login')
+  }
 
   return (
     <div className={classNameProp}>
@@ -25,12 +36,25 @@ export default function MenuMobile({ classNameProp }: Props) {
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <Link href="#" className="text-gray-500 hover:text-gray-800">
-            Favourites
-          </Link>
-          <Link href="#" className="text-gray-500 hover:text-gray-800">
-            Cart()
-          </Link>
+          {NavigationMenu.map((item) => (
+            <Link
+              key={item.href}
+              href={
+                item.href.includes('cart') ? `${item.href}/${id}` : item.href
+              }
+              className="text-black hover:underline"
+              onClick={() => setIsOpen(false)}
+            >
+              {item.title}
+            </Link>
+          ))}
+
+          <h3
+            className="text-black hover:underline cursor-pointer"
+            onClick={logout}
+          >
+            Logout
+          </h3>
         </nav>
       )}
     </div>
