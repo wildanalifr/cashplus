@@ -1,10 +1,9 @@
 'use client'
 
-import { useCart } from '@/context/CartContext'
-import Link from 'next/link'
-import { NavigationMenu } from '../helper/NavigationMenu'
 import { API_LOGIN } from '@/api/login'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { NavigationMenu } from '../helper/NavigationMenu'
 
 type Props = {
   classNameProp: string
@@ -13,9 +12,10 @@ type Props = {
 export default function MenuDesktop({ classNameProp }: Props) {
   const { id } = JSON.parse(localStorage.getItem('user')!)
 
+  const router = useRouter()
+
   const logout = () => {
     API_LOGIN.logout()
-    const router = useRouter()
     router.push('/login')
   }
 
@@ -32,13 +32,7 @@ export default function MenuDesktop({ classNameProp }: Props) {
           </Link>
         ))}
 
-        <h3
-          onClick={() => {
-            API_LOGIN.logout()
-          }}
-        >
-          Logout
-        </h3>
+        <h3 onClick={logout}>Logout</h3>
       </>
     </nav>
   )

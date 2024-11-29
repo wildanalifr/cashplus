@@ -1,16 +1,12 @@
-import { useCart } from '@/context/CartContext'
-import { useLikeProduct } from '@/context/LikeProductContext'
 import { tProduct } from '@/types/product'
-import { HeartIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 
 type Props = {
   propItem: tProduct
 }
 
 export default function ProductCartCard({ propItem }: Props) {
-  const { category, description, id, image, price, title, quantity } = propItem
+  const { image, price, title, quantity } = propItem
 
   return (
     <div className="flex flex-wrap items-center">

@@ -2,7 +2,7 @@ export const NavigationMenu = [
   {
     key: 'favourites',
     href: '/favourites',
-    title: 'Favourties',
+    title: 'Favourites',
   },
   {
     key: 'cart',

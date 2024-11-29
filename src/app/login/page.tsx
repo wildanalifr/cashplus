@@ -10,10 +10,9 @@ export default function Page() {
   const [password, setPassword] = useState('')
   const router = useRouter()
 
-  const { mutate, isLoading, isError, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: API_LOGIN.postData,
     onSuccess: (data) => {
-      console.log('data', data)
       document.cookie = `auth_token=${data.data.token}; path=/`
       localStorage.setItem(
         'user',
@@ -24,29 +23,21 @@ export default function Page() {
       )
       router.push('/')
     },
-    onError: (error: any) => {
+    onError: (error) => {
       console.error('Error:', error.message)
-      alert('error cuk')
+      alert('error nih')
     },
   })
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // if (username === 'user' && password === 'password') {
-    //   document.cookie = 'auth_token=your-token; path=/'
-
-    //   router.push('/')
-    // } else {
-    //   alert('Invalid login credentials')
-    // }
-
     const data = { username, password }
     mutate(data)
   }
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 border rounded">
+    <div className="max-w-lg mx-auto mt-28 p-6 border rounded ">
       <h2 className="text-2xl font-semibold mb-4">Login</h2>
       <form onSubmit={handleLogin}>
         <div className="mb-4">
@@ -69,6 +60,7 @@ export default function Page() {
         </div>
         <button
           type="submit"
+          disabled={isPending}
           className="w-full bg-blue-600 text-white py-2 rounded"
         >
           Login

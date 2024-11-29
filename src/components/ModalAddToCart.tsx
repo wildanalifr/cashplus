@@ -5,7 +5,6 @@ import {
   DialogTitle,
 } from '@headlessui/react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 
 type Props = {
   isOpen: boolean
@@ -15,12 +14,14 @@ type Props = {
 export default function ModalAddToCart({ isOpen, setIsOpen }: Props) {
   const router = useRouter()
 
+  const { id } = JSON.parse(localStorage.getItem('user')!)
+
   const handleBack = () => {
     router.push('/')
     setIsOpen(false)
   }
   const handleToCart = () => {
-    router.push('/cart/5')
+    router.push('/cart/' + id)
     setIsOpen(false)
   }
 

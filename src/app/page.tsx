@@ -4,15 +4,36 @@ import ProductCard from '@/components/ProductCard'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { tProduct } from '../types/product'
+import { useMemo, useState } from 'react'
+import FilterSort from '@/components/FilterSort'
 
 export default function Home() {
+  const [filterSort, setFilterSort] = useState<string>('')
+  const [search, setSearch] = useState<string>('')
+
+  const handleOnChangeFilterSort = (data: string) => {
+    setFilterSort(data)
+  }
+
   const { data, isLoading } = useQuery<tProduct[]>({
-    queryKey: ['products'],
+    queryKey: ['products', filterSort],
     queryFn: () =>
-      fetch('https://fakestoreapi.com/products').then((res) => res.json()),
-    // stale time like data will be fresh after ... time, user go to another page and back will not fetch data until stale time is end.
+      fetch(`https://fakestoreapi.com/products?sort=${filterSort}`).then(
+        (res) => res.json()
+      ),
     staleTime: 1000 * 10 * 1,
   })
+
+  const filterData = useMemo(() => {
+    if (!data) return []
+    return data.filter((item) => {
+      const title = item.title.toLowerCase()
+      const searchTerm = search.toLowerCase()
+      return title.includes(searchTerm)
+    })
+  }, [data, search])
+
+  console.log('run')
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -34,13 +55,36 @@ export default function Home() {
         />
       </div>
 
-      <div className="mt-5">
+      {/* <div className="flex items-center justify-between border border-gray-300 rounded-lg px-4 py-2 space-x-2 my-4 bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+        <input
+          className="flex-1 bg-transparent text-gray-800 placeholder-gray-400 outline-none px-2 py-1 rounded-lg ring-0"
+          type="text"
+          placeholder="Search product name..."
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div> */}
+
+      <div className="flex items-center justify-between my-2 gap-3">
+        <input
+          className="flex-1 bg-white text-gray-800 placeholder-gray-400 outline-none px-4 py-2 space-x-2 rounded-lg "
+          type="text"
+          placeholder="Search product name..."
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <FilterSort typeSort={filterSort} onChange={handleOnChangeFilterSort} />
+      </div>
+
+      <div>
         {isLoading && <p>loading....</p>}
         {!isLoading && (
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {data?.map((item) => (
-              <ProductCard key={item.id} propItem={item} />
-            ))}
+            {filterData && filterData?.length > 0 ? (
+              filterData?.map((item) => (
+                <ProductCard key={item.id} propItem={item} />
+              ))
+            ) : (
+              <p>data tidak ditemukan</p>
+            )}
           </div>
         )}
       </div>
