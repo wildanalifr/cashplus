@@ -2,16 +2,16 @@ This project using stack: Next.js with Typescript, Headless UI, Hero icons, and 
 
 ## Getting Started
 
-First, run the development server:
+First, install project with :
+
+```bash
+npm install
+```
+
+Secondly, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser.
